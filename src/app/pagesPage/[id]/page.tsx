@@ -1,6 +1,13 @@
 import FilterSection from "@/components/FilterSection/FilterSection";
 import Image from "next/image";
 import { Star, Heart, ArrowRight } from "lucide-react";
+import { Metadata } from "next";
+
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
 
 const products = [
   {
@@ -157,13 +164,27 @@ const relatedProducts = [
 ];
 
 export async function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id,
-  }));
+  return [
+    { id: "1" },
+    { id: "2" },
+    { id: "3" },
+    { id: "4" },
+    { id: "5" },
+    { id: "6" },
+    { id: "7" },
+    { id: "8" },
+    { id: "9" },
+    { id: "10" },
+  ];
 }
 
-const Page = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+export const metadata: Metadata = {
+  title: "Product Details",
+};
+
+const Page = async ({ params }: PageProps) => {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   const data = products.find((e) => e.id === id);
   if (!data) {
     return (
