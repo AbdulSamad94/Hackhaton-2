@@ -2,9 +2,15 @@ interface textType {
   textTitle: string;
   textNavigation: string;
   pageName: string;
+  className?: string;
 }
 
-const FilterSection = ({ textTitle, textNavigation, pageName }: textType) => {
+const FilterSection = ({
+  textTitle,
+  textNavigation,
+  pageName,
+  className,
+}: textType) => {
   return (
     <section>
       <div className="flex flex-col bg-slate-100 w-full h-[286px] lg:pl-24 pt-24 text-center lg:text-start">
@@ -16,7 +22,9 @@ const FilterSection = ({ textTitle, textNavigation, pageName }: textType) => {
           <span className="text-pink-500 font-semibold">{pageName}</span>
         </p>
       </div>
-      <div className="mt-20 flex justify-around items-center lg:flex-row flex-col px-3">
+      <div
+        className={`${className} mt-20 flex justify-around items-center lg:flex-row flex-col px-3`}
+      >
         <div>
           <h1 className="text-2xl text-1 text-indigo-950 font-bold">
             Ecommerce Acceories & Fashion item

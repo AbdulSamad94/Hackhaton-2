@@ -1,5 +1,6 @@
 import FilterSection from "@/components/FilterSection/FilterSection";
 import Image from "next/image";
+import Link from "next/link";
 
 const products = [
   {
@@ -97,7 +98,7 @@ const Page = () => {
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 place-self-center mx-10 mt-16">
         {products.map((item, index) => (
-          <div key={index}>
+          <Link href={`/pagesPage/${item.id}`} key={index}>
             <div className="bg-slate-100 w-[270px] h-[280px] flex justify-center items-center">
               <Image
                 src={item.img}
@@ -123,7 +124,7 @@ const Page = () => {
                 <p className="text-red-600 line-through">{item.prevPrice}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="flex justify-center items-center mt-14">

@@ -161,6 +161,15 @@ const Page = () => {
           </div>
         ))}
       </div>
+      <div className="flex justify-center items-center mt-14">
+        <Image
+          src={"/topProduct/brands.png"}
+          alt="brands-img"
+          width={904}
+          height={93}
+          className="cursor-pointer"
+        />
+      </div>
     </main>
   );
 };
