@@ -1,4 +1,5 @@
 import { Mail, ChevronDown, User, Heart, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { FiPhoneCall } from "react-icons/fi";
 
 const nav = [
@@ -46,7 +47,9 @@ const TopBar = () => {
               {item.icon}
             </p>
           ))}
-          <ShoppingCart size={20} className="ml-5" />
+          <Link href={"/shoppingCart"}>
+            <ShoppingCart size={20} className="ml-5" />
+          </Link>
         </div>
       </div>
     </div>
