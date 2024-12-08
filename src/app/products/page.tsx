@@ -100,7 +100,7 @@ const Page = () => {
       <div className="space-y-10 mt-20">
         {products.map((item, index) => (
           <div
-            className="flex justify-start gap-y-14 gap-x-8 items-center ml-24 cursor-pointer hover:scale-110 transition-all"
+            className="flex justify-start gap-y-14 gap-x-8 items-center lg:ml-24 cursor-pointer hover:scale-110 transition-all lg:flex-row flex-col"
             key={index}
           >
             <div>
@@ -112,7 +112,7 @@ const Page = () => {
                 className="w-auto h-auto"
               />
             </div>
-            <div className="w-[550px]">
+            <div className="lg:w-[550px] w-full flex justify-center lg:block items-center flex-col">
               <div className="flex items-center gap-x-4">
                 <h1 className="text-1 font-bold text-[19px] text-indigo-900">
                   {item.name}
@@ -149,7 +149,9 @@ const Page = () => {
                   ))}
                 </div>
               </div>
-              <p className="lato text-gray-400 text-lg my-4">{item.text}</p>
+              <p className="lato text-gray-400 text-center lg:text-start text-lg my-4">
+                {item.text}
+              </p>
               <div className="flex gap-x-16 mt-8">
                 {item.cart}
                 {item.heart}
