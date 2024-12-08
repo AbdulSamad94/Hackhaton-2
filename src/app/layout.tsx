@@ -6,6 +6,9 @@ import Footer from "@/components/Footer/Footer";
 export const metadata: Metadata = {
   title: "Hackhaton 2",
   description: "Hackhaton 2 ecommerce ui-ux template making",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
