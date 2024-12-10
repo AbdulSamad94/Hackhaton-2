@@ -41,13 +41,7 @@ const TopCategories = () => {
           height={12}
         />
       </div>
-      <Image
-        src={"/topProduct/subscribe-img.png"}
-        alt="subscribe-img"
-        width={1980}
-        height={462}
-        className="mt-20 w-full h-auto"
-      />
+      <div className="bg-[url('/topProduct/subscribe-img.png')] bg-cover bg-center h-64 w-full mt-10"></div>
       <div className="flex justify-center items-center mt-14">
         <Image
           src={"/topProduct/brands.png"}

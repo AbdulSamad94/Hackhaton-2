@@ -100,13 +100,7 @@ const Page = () => {
         {products.map((item, index) => (
           <Link href={`/pagesPage/${item.id}`} key={index}>
             <div className="bg-slate-100 w-[270px] h-[280px] flex justify-center items-center">
-              <Image
-                src={item.img}
-                alt={item.name}
-                width={201}
-                height={201}
-                className="w-auto h-auto"
-              />
+              <Image src={item.img} alt={item.name} width={201} height={201} />
             </div>
             <div className="flex justify-center items-center flex-col">
               <h1 className="text-lg text-center font-bold text-1 text-indigo-950 mt-4">

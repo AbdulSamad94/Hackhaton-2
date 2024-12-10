@@ -104,13 +104,7 @@ const Page = () => {
             key={index}
           >
             <div>
-              <Image
-                src={item.img}
-                alt={item.name}
-                width={314}
-                height={218}
-                className="w-auto h-auto"
-              />
+              <Image src={item.img} alt={item.name} width={314} height={218} />
             </div>
             <div className="lg:w-[550px] w-full flex justify-center lg:block items-center flex-col">
               <div className="flex items-center gap-x-4">

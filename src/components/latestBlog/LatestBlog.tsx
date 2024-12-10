@@ -48,7 +48,7 @@ const LatestBlog = () => {
         {imges.map((item, index) => (
           <div
             key={index}
-            className="rounded-md shadow pb-4 w-[370px] h-auto cursor-pointer"
+            className="rounded-md shadow pb-4 md:w-[370px] w-[340px] h-auto cursor-pointer"
           >
             <Image
               src={item.url}
