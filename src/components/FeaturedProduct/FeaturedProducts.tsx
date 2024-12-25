@@ -1,51 +1,37 @@
 import Image from "next/image";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-const featuredProducts = [
-  {
-    url: "/FeaturedProduct/img-1.png",
-    text: "Cantilever chair",
-    dots: "/FeaturedProduct/dots.png",
-    code: "Code - Y523201",
-    price: "$42.00",
-  },
-  {
-    url: "/FeaturedProduct/img-2.png",
-    text: "Cantilever chair",
-    dots: "/FeaturedProduct/dots.png",
-    code: "Code - Y523201",
-    price: "$42.00",
-  },
-  {
-    url: "/FeaturedProduct/img-3.png",
-    text: "Cantilever chair",
-    dots: "/FeaturedProduct/dots.png",
-    code: "Code - Y523201",
-    price: "$42.00",
-  },
-  {
-    url: "/FeaturedProduct/img-4.png",
-    text: "Cantilever chair",
-    dots: "/FeaturedProduct/dots.png",
-    code: "Code - Y523201",
-    price: "$42.00",
-  },
-];
+interface dataType {
+  slug: string;
+  title: string;
+  image: string;
+  currentPrice: string;
+}
 
-const FeaturedProducts = () => {
+const FeaturedProducts = async () => {
+  const response: dataType[] =
+    await client.fetch(`*[_type == "featuredProduct"]{
+  slug,
+  title,
+  image,
+  currentPrice
+}`);
+
   return (
     <section className="mt-20">
       <h1 className="text-4xl text-center text-1 font-bold text-indigo-950">
         Featured Products
       </h1>
       <div className="mt-6 flex justify-center items-center flex-col lg:flex-row gap-4">
-        {featuredProducts.map((item, index) => (
+        {response.map((item, index) => (
           <div
             key={index}
-            className="shadow hover:bg-blue-800 flex flex-col justify-center items-center pb-4 group transition-all"
+            className="cursor-pointer shadow hover:bg-blue-800 flex flex-col justify-center items-center pb-4 group transition-all"
           >
             <div className="bg-slate-100 relative w-[270px] h-[236px] flex justify-center items-center">
               <Image
-                src={item.url}
+                src={urlFor(item.image).url()}
                 alt="product-img"
                 width={270}
                 height={236}
@@ -59,11 +45,11 @@ const FeaturedProducts = () => {
             </div>
             <div className="flex flex-col justify-center items-center">
               <h1 className="lato text-lg text-pink-600 font-semibold my-3 group-hover:text-white">
-                {item.text}
+                {item.title}
               </h1>
               <div>
                 <Image
-                  src={item.dots}
+                  src="/FeaturedProduct/dots.png"
                   alt="product-img"
                   width={270}
                   height={236}
@@ -71,10 +57,10 @@ const FeaturedProducts = () => {
                 />
               </div>
               <p className="text-sm text-1 text-indigo-800 my-3 group-hover:text-white">
-                {item.code}
+                Code - Y523201
               </p>
               <p className="text-sm text-1 text-indigo-800 group-hover:text-white">
-                {item.price}
+                ${item.currentPrice}.00
               </p>
             </div>
           </div>
