@@ -2,6 +2,8 @@ import FilterSection from "@/components/FilterSection/FilterSection";
 import Image from "next/image";
 import { Star, Heart, ArrowRight } from "lucide-react";
 import { Metadata } from "next";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
 interface PageProps {
   params: Promise<{
@@ -9,128 +11,13 @@ interface PageProps {
   }>;
 }
 
-const products = [
-  {
-    id: "1",
-    name: "Vel elit euismod",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-1.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "2",
-    name: "Ultricies condimentum imperdiet",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-2.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "3",
-    name: "Vitae suspendisse sed",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-3.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "4",
-    name: "Sed at fermentum",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-4.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "5",
-    name: "Fusce pellentesque at",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-5.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "6",
-    name: "Vestibulum magna laoreet",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-6.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "7",
-    name: "Sollicitudin amet orci",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-7.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "8",
-    name: "Ultrices mauris sit",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-8.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "9",
-    name: "Pellentesque condimentum ac",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-9.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "10",
-    name: "Lectus vulputate faucibus",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-10.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "11",
-    name: "Purus risus, ut",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-11.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-  {
-    id: "4",
-    name: "Sed at fermentum",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-4.png",
-    stars: 5,
-    rating: "(22)",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis suscipit, quia veniam minima facere ex!",
-  },
-];
+interface dataType {
+  slug: string;
+  title: string;
+  image: string;
+  prevPrice: string;
+  currentPrice: string;
+}
 
 const relatedProducts = [
   {
@@ -164,18 +51,13 @@ const relatedProducts = [
 ];
 
 export async function generateStaticParams() {
-  return [
-    { id: "1" },
-    { id: "2" },
-    { id: "3" },
-    { id: "4" },
-    { id: "5" },
-    { id: "6" },
-    { id: "7" },
-    { id: "8" },
-    { id: "9" },
-    { id: "10" },
-  ];
+  const products: dataType[] = await client.fetch(`*[_type == "productsList"]{
+      "slug": slug.current
+    }`);
+
+  return products.map((product) => ({
+    id: product.slug,
+  }));
 }
 
 export const metadata: Metadata = {
@@ -183,9 +65,18 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params }: PageProps) => {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
-  const data = products.find((e) => e.id === id);
+  const { id } = await params;
+  const response: dataType[] =
+    await client.fetch(`*[_type == "productsList"|| _type == "pagesProduct"|| _type == "featuredProduct"|| _type == "latestProduct"|| _type == "TogCategories"|| _type == "trendingProduct"]{
+        "slug" : slug.current,
+        title,
+        image,
+        prevPrice,
+        currentPrice,
+      }`);
+
+  const data = response.find((e) => e.slug === id);
+
   if (!data) {
     return (
       <div className="text-center mt-20">
@@ -213,12 +104,17 @@ const Page = async ({ params }: PageProps) => {
         <div className="flex justify-start gap-6 lg:flex-row flex-col-reverse">
           {/* LeftImage */}
           <div className="w-[176px] h-[180px] bg-slate-100 flex justify-center items-center shadow m-auto lg:m-0">
-            <Image src={`${data?.img}`} alt="img" width={151} height={155} />
+            <Image
+              src={urlFor(data.image).url()}
+              alt="img"
+              width={151}
+              height={155}
+            />
           </div>
           {/* Right-Image */}
           <div className="lg:w-[395px] lg:h-[502px] bg-slate-100 flex justify-center items-center shadow mx-4">
             <Image
-              src={`${data?.img}`}
+              src={urlFor(data.image).url()}
               alt="main-img"
               width={375}
               height={487}
@@ -228,27 +124,29 @@ const Page = async ({ params }: PageProps) => {
         {/* Right-Side-Text */}
         <div className="lg:w-[40%] w-full flex flex-col justify-center items-center lg:block mt-10 lg:mt-0">
           <h1 className="text-4xl text-indigo-900 font-bold text-1">
-            {data?.name}
+            {data.title}
           </h1>
-          <div className="flex gap-x-1 items-center mt-2">
-            {Array.from({ length: data.stars }).map((_, i) => (
-              <Star
-                key={`star-${i}`}
-                size={12}
-                className="text-yellow-400 fill-yellow-400"
-              />
-            ))}
-            <span className="text-1 text-indigo-900">{data.rating}</span>
+          <div className="flex gap-x-1 items-center">
+            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+            <span className="text-1 text-indigo-900 mt-1">(22)</span>
           </div>
           <div className="flex items-center gap-x-4 mt-4">
-            <p className="text-1 text-indigo-900">{data.price}</p>
-            <p className="text-red-500 text-1 line-through">{data.prevPrice}</p>
+            <p className="text-1 text-indigo-900">${data.currentPrice}.00</p>
+            {data.prevPrice && (
+              <p className="text-red-500 text-1 line-through">
+                ${data.prevPrice}.00
+              </p>
+            )}
           </div>
           <p className="text-1 text-indigo-900 mt-4 font-semibold">Color</p>
           <p className="text-1 text-gray-400 mt-4 text-center lg:text-start mx-4 lg:mx-0">
-            {data.text}
+            {data.title}
           </p>
-          <div className="flex  items-center mt-6 ml-8">
+          <div className="flex items-center mt-6 ml-8 hover:border hover:border-black px-4 py-2 transition-all cursor-pointer w-48 justify-center rounded-md">
             <p className="text-1 text-indigo-900 text-lg">Add To Cart</p>
             <Heart className="text-indigo-900 ml-4 mb-1" size={18} />
           </div>

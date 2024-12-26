@@ -21,7 +21,7 @@ const navLinks = [
   },
   {
     name: "Shop",
-    link: "/pagesPage",
+    link: "/products",
   },
   {
     name: "Contact",

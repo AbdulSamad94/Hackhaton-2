@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import Link from "next/link";
 
 interface dataType {
   slug: string;
@@ -24,7 +25,8 @@ const TopCategories = async () => {
       </h1>
       <div className="flex flex-col lg:flex-row justify-center items-center mt-10">
         {response.map((item, index) => (
-          <div
+          <Link
+            href={`/products/${item.slug}`}
             className="relative flex justify-center items-center flex-col"
             key={index}
           >
@@ -55,7 +57,7 @@ const TopCategories = async () => {
             <p className="text-1 text-indigo-900 text-sm">
               ${item.currentPrice}.00
             </p>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="flex justify-center items-center mt-10">
@@ -70,9 +72,12 @@ const TopCategories = async () => {
         <h1 className="sm:text-4xl text-2xl text-center text-1 font-bold text-indigo-900 md:w-[40%] leading-relaxed">
           Get Leatest Update By Subscribe 0ur Newslater
         </h1>
-        <p className="text-1 text-sm sm:text-base text-white flex justify-center items-center font-bold sm:px-12 py-3 bg-pink-500 mt-6 px-4">
+        <Link
+          href="/products"
+          className="text-1 text-sm sm:text-base text-white flex justify-center items-center font-bold sm:px-12 py-3 bg-pink-500 mt-6 px-4"
+        >
           Shop Now
-        </p>
+        </Link>
       </div>
       <div className="flex justify-center items-center mt-14">
         <Image

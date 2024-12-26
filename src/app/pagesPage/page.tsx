@@ -1,121 +1,87 @@
 import FilterSection from "@/components/FilterSection/FilterSection";
+import { Heart, ShoppingCart, ZoomIn, Star } from "lucide-react";
 import Image from "next/image";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
 
-const products = [
-  {
-    id: 1,
-    name: "Vel elit euismod",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-1.png",
-  },
-  {
-    id: 2,
-    name: "Ultricies condimentum imperdiet",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-2.png",
-  },
-  {
-    id: 3,
-    name: "Vitae suspendisse sed",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-3.png",
-  },
-  {
-    id: 4,
-    name: "Sed at fermentum",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-4.png",
-  },
-  {
-    id: 5,
-    name: "Fusce pellentesque at",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-5.png",
-  },
-  {
-    id: 6,
-    name: "Vestibulum magna laoreet",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-6.png",
-  },
-  {
-    id: 7,
-    name: "Sollicitudin amet orci",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-7.png",
-  },
-  {
-    id: 8,
-    name: "Ultrices mauris sit",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-8.png",
-  },
-  {
-    id: 9,
-    name: "Pellentesque condimentum ac",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-9.png",
-  },
-  {
-    id: 10,
-    name: "Lectus vulputate faucibus",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-10.png",
-  },
-  {
-    id: 11,
-    name: "Purus risus, ut",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-11.png",
-  },
-  {
-    id: 4,
-    name: "Sed at fermentum",
-    price: "$26.00 ",
-    prevPrice: "$42.00",
-    img: "/pagesPage/img-4.png",
-  },
-];
-const Page = () => {
+interface dataType {
+  slug: string;
+  title: string;
+  image: string;
+  prevPrice: string;
+  currentPrice: string;
+}
+
+const Page = async () => {
+  const response: dataType[] = await client.fetch(`*[_type == "pagesProduct"]{
+        "slug" : slug.current,
+        title,
+        image,
+        prevPrice,
+        currentPrice,
+      }`);
+
   return (
-    <main className="mt-10">
+    <main className="mt-10 overflow-hidden">
       <FilterSection
-        textTitle={"Shop Grid Default"}
-        textNavigation={"Home . Pages . "}
-        pageName={"Shop Grid Default"}
+        textTitle={"Shop Products"}
+        textNavigation={"Home . "}
+        pageName={"Shop Products"}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 place-self-center mx-10 mt-16">
-        {products.map((item, index) => (
-          <Link href={`/pagesPage/${item.id}`} key={index}>
-            <div className="bg-slate-100 w-[270px] h-[280px] flex justify-center items-center">
-              <Image src={item.img} alt={item.name} width={201} height={201} />
-            </div>
-            <div className="flex justify-center items-center flex-col">
-              <h1 className="text-lg text-center font-bold text-1 text-indigo-950 mt-4">
-                {item.name}
-              </h1>
+      <div className="space-y-10 mt-20">
+        {response.map((item, index) => (
+          <Link
+            href={`/products/${item.slug}`}
+            className="flex justify-start gap-y-14 gap-x-8 items-center lg:ml-24 cursor-pointer hover:scale-105 transition-all lg:flex-row flex-col"
+            key={index}
+          >
+            <div>
               <Image
-                src={"/pagesPage/pagination.png"}
-                alt="pagination-img"
-                width={42}
-                height={10}
-                className="mt-2"
+                src={urlFor(item.image).url()}
+                alt={item.title}
+                width={314}
+                height={218}
               />
-              <div className="flex justify-center gap-x-3 mt-3 text-1 text-sm">
-                <p className="text-indigo-900">{item.price}</p>
-                <p className="text-red-600 line-through">{item.prevPrice}</p>
+            </div>
+            <div className="lg:w-[550px] w-full flex justify-center lg:block items-center flex-col">
+              <div className="flex items-center gap-x-4">
+                <h1 className="text-1 font-bold text-[19px] text-indigo-900">
+                  {item.title}
+                </h1>
+                <div>
+                  <Image
+                    src={"/pagesPage/pagination.png"}
+                    alt="pagination"
+                    width={42}
+                    height={10}
+                    className="w-auto h-auto"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-x-4">
+                <p className="text-1 text-indigo-900">
+                  ${item.currentPrice}.00
+                </p>
+                <p className="text-red-500 text-1 line-through">
+                  ${item.prevPrice}.00
+                </p>
+                <div className="flex gap-x-1 items-center mb-1">
+                  <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                  <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                  <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                  <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                  <Star size={16} className="text-gray-200 fill-gray-200" />
+                </div>
+              </div>
+              <p className="lato text-gray-400 text-center lg:text-start text-lg my-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna
+                in est adipiscing in phasellus non in justo.
+              </p>
+              <div className="flex gap-x-16 mt-8">
+                <ShoppingCart size={20} className="text-gray-500" />
+                <Heart size={20} className="text-gray-500" />
+                <ZoomIn size={20} className="text-gray-500" />
               </div>
             </div>
           </Link>

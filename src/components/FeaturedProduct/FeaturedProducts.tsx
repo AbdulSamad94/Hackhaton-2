@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import Link from "next/link";
 
 interface dataType {
   slug: string;
@@ -12,7 +13,7 @@ interface dataType {
 const FeaturedProducts = async () => {
   const response: dataType[] =
     await client.fetch(`*[_type == "featuredProduct"]{
-  slug,
+  "slug" : slug.current,
   title,
   image,
   currentPrice
@@ -25,7 +26,8 @@ const FeaturedProducts = async () => {
       </h1>
       <div className="mt-6 flex justify-center items-center flex-col lg:flex-row gap-4">
         {response.map((item, index) => (
-          <div
+          <Link
+            href={`/products/${item.slug}`}
             key={index}
             className="cursor-pointer shadow hover:bg-blue-800 flex flex-col justify-center items-center pb-4 group transition-all"
           >
@@ -63,7 +65,7 @@ const FeaturedProducts = async () => {
                 ${item.currentPrice}.00
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="flex justify-center items-center mt-6">

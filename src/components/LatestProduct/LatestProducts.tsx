@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { client } from "@/sanity/lib/client";
+import Link from "next/link";
 
 const name = [
   {
@@ -51,7 +52,11 @@ const LatestProducts = async () => {
       <div className="flex justify-center items-center mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {response.map((item, index) => (
-            <div key={index} className="px-5 md:px-0 m-auto">
+            <Link
+              href={`/products/${item.slug}`}
+              key={index}
+              className="px-5 md:px-0 m-auto"
+            >
               <div
                 className={`${
                   item.slug === "comfort-handy-craft-1"
@@ -73,13 +78,15 @@ const LatestProducts = async () => {
                   {item.title}
                 </p>
                 <div className="flex justify-center items-center gap-x-2 text-1">
-                  <p className="text-indigo-950 text-sm">{item.prevPrice}</p>
-                  <p className="text-pink-500 text-[12px] line-through text-xs">
-                    {item.currentPrice}
+                  <p className="text-indigo-950 text-sm">
+                    ${item.prevPrice}.00
+                  </p>
+                  <p className="text-pink-500 text-[12px] line-through mt-1">
+                    ${item.currentPrice}.00
                   </p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

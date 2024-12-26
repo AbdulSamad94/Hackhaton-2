@@ -45,7 +45,8 @@ const TrendingProduct = async () => {
       </h1>
       <div className="flex justify-center items-center gap-10 flex-col md:flex-row">
         {response.map((item, index) => (
-          <div
+          <Link
+            href={`/products/${item.slug}`}
             key={index}
             className="shadow w-[270px] h-[350px] flex justify-center items-center flex-col mt-10 cursor-pointer hover:scale-110 transition-all"
           >
@@ -62,7 +63,7 @@ const TrendingProduct = async () => {
                 ${item.prevPrice}.00
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="flex justify-center gap-6 items-center mt-6 lg:flex-row flex-col">
