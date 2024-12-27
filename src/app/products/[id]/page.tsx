@@ -4,6 +4,7 @@ import { Star, Heart, ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import AddToCartButton from "@/components/ShoppingCartComponents/AddToCart";
 
 interface PageProps {
   params: Promise<{
@@ -146,8 +147,8 @@ const Page = async ({ params }: PageProps) => {
           <p className="text-1 text-gray-400 mt-4 text-center lg:text-start mx-4 lg:mx-0">
             {data.title}
           </p>
-          <div className="flex items-center mt-6 ml-8 hover:border hover:border-black px-4 py-2 transition-all cursor-pointer w-48 justify-center rounded-md">
-            <p className="text-1 text-indigo-900 text-lg">Add To Cart</p>
+          <div className="flex items-center mt-6 ml-8 hover:underline px-4 py-2 transition-all cursor-pointer w-48 justify-center rounded-md">
+            <AddToCartButton product={data} />
             <Heart className="text-indigo-900 ml-4 mb-1" size={18} />
           </div>
           <div className="text-1 text-indigo-900 mt-5 space-y-3 font-semibold">

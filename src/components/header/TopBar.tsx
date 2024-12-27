@@ -1,6 +1,9 @@
+"use client";
+
 import { Mail, ChevronDown, User, Heart, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { FiPhoneCall } from "react-icons/fi";
+import { useShoppingCart } from "use-shopping-cart";
 
 const nav = [
   {
@@ -22,6 +25,7 @@ const nav = [
 ];
 
 const TopBar = () => {
+  const { cartCount } = useShoppingCart();
   return (
     <div className="bg-purple-700 w-full h-[44px] flex justify-center items-center text-white text-1 text-xs md:text-base px-4">
       <div className="flex justify-between items-center w-full max-w-[1200px] flex-wrap">
@@ -47,8 +51,11 @@ const TopBar = () => {
               {item.icon}
             </p>
           ))}
-          <Link href={"/shoppingCart"}>
+          <Link className="relative" href={"/shoppingCart"}>
             <ShoppingCart size={20} className="ml-5" />
+            <div className="w-4 h-4 bg-black rounded-full absolute top-3 -right-2 text-[10px] flex justify-center items-center text-center">
+              {cartCount}
+            </div>
           </Link>
         </div>
       </div>

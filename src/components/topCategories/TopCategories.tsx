@@ -27,24 +27,26 @@ const TopCategories = async () => {
         {response.map((item, index) => (
           <Link
             href={`/products/${item.slug}`}
-            className="relative flex justify-center items-center flex-col"
+            className="flex justify-center items-center flex-col"
             key={index}
           >
-            <Image
-              src={"/topProduct/back-img.png"}
-              alt="backimg"
-              width={500}
-              height={500}
-              className="w-auto h-auto rounded-full"
-            />
-            <div className="group w-[272px] h-[272px] bg-slate-50 flex justify-center items-center absolute hover:top-6  top-[30px] right-[39px] flex-col z-10 rounded-full transition-all">
+            <div className="relative">
               <Image
-                src={urlFor(item.image).url()}
-                alt="top-categories-img"
-                width={269}
-                height={345}
-                className="cursor-pointer w-auto h-auto z-10"
+                src={"/topProduct/back-img.png"}
+                alt="backimg"
+                width={500}
+                height={500}
+                className="w-auto h-auto rounded-full"
               />
+              <div className="group w-[272px] h-[272px] bg-slate-50 flex justify-center items-center absolute hover:top-6  top-[30px] right-[39px] flex-col z-10 rounded-full transition-all">
+                <Image
+                  src={urlFor(item.image).url()}
+                  alt="top-categories-img"
+                  width={269}
+                  height={345}
+                  className="cursor-pointer w-auto h-auto z-10"
+                />
+              </div>
               <p
                 className={`group-hover:flex hidden transition-all absolute bottom-7 text-sm bg-green-500 w-[94px] h-[29px] justify-center items-center text-1 text-white z-10 cursor-pointer`}
               >

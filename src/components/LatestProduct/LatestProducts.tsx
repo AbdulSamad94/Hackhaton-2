@@ -3,22 +3,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { client } from "@/sanity/lib/client";
 import Link from "next/link";
 
-const name = [
-  {
-    name: "New Arrival",
-  },
-  {
-    name: "Best Seller",
-  },
-  {
-    name: "Featured",
-  },
-  {
-    name: "Special Offer",
-  },
-];
+const categories = ["New Arrival", "Best Seller", "Featured", "Special Offer"];
 
-interface dataType {
+interface DataType {
   slug: string;
   title: string;
   image: string;
@@ -27,25 +14,26 @@ interface dataType {
 }
 
 const LatestProducts = async () => {
-  const response: dataType[] = await client.fetch(`*[_type == "latestProduct"]{
-  "slug" : slug.current,
-  title,
-  image,
-  prevPrice,
-  currentPrice,
-}`);
+  const response: DataType[] = await client.fetch(`*[_type == "latestProduct"]{
+    "slug": slug.current,
+    title,
+    image,
+    prevPrice,
+    currentPrice,
+  }`);
+
   return (
     <section className="mt-20">
       <h1 className="text-4xl text-center text-1 font-bold text-indigo-950">
         Latest Product
       </h1>
       <div className="flex justify-center items-center gap-14 mt-5 lg:flex-row flex-col">
-        {name.map((item, index) => (
+        {categories.map((category, index) => (
           <p
             className="hover:text-red-500 hover:underline transition-all cursor-pointer"
             key={index}
           >
-            {item.name}
+            {category}
           </p>
         ))}
       </div>
@@ -65,7 +53,6 @@ const LatestProducts = async () => {
                 } md:w-[360px] h-[270px] w-[300px] flex justify-center items-center`}
               >
                 <Image
-                  key={index}
                   src={urlFor(item.image).url()}
                   alt="latest-product-image"
                   width={360}
