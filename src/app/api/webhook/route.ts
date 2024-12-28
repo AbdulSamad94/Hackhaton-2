@@ -28,8 +28,8 @@ export async function POST(request: Request) {
                 quantity: item.quantity,
             })),
             mode: "payment",
-            success_url: "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/shoppingCart",
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/shoppingCart`,
         });
 
         return NextResponse.json({ sessionId: session.id });
