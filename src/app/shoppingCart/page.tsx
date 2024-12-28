@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 
 import FilterSection from "@/components/FilterSection/FilterSection";
@@ -9,6 +9,7 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
 import { X } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Page = () => {
   const { cartDetails, totalPrice, removeItem, setItemQuantity, clearCart } =
@@ -18,6 +19,44 @@ const Page = () => {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
+
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  );
+
+  const handleCheckOut = async () => {
+    const stripe = await stripePromise;
+
+    if (!stripe) {
+      console.error("Stripe.js has not loaded properly.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/webhook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cartDetails: Object.values(cartDetails || {}) }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const { sessionId } = await response.json();
+
+      if (sessionId) {
+        const { error } = await stripe.redirectToCheckout({ sessionId });
+        if (error) {
+          console.error("Error redirecting to checkout:", error);
+        }
+      } else {
+        console.error("No session ID returned.");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+    }
+  };
 
   if (cartDetails && Object.keys(cartDetails).length === 0) {
     return (
@@ -150,9 +189,11 @@ const Page = () => {
                 <div className="flex justify-between items-center mt-4">
                   <p className="font-bold text-indigo-900 text-lg">Totals:</p>
                   <p className="text-indigo-900 font-medium text-lg">
+                    $
                     {shipping && country && city && postalCode
-                      ? `£${(totalPrice ?? 0) + 100}.00`
-                      : `£${totalPrice}.00`}
+                      ? (totalPrice || 0) + 100
+                      : totalPrice || 0}
+                    .00
                   </p>
                 </div>
                 <div className="w-full h-[2px] bg-gray-300 rounded-full my-2 "></div>
@@ -169,7 +210,10 @@ const Page = () => {
                     Shipping & taxes calculated at checkout
                   </p>
                 </div>
-                <button className="md:w-[312px] w-full h-[40px] bg-green-500 rounded-md text-white flex justify-center items-center cusror-pointer hover:bg-green-600">
+                <button
+                  onClick={handleCheckOut}
+                  className="md:w-[312px] w-full h-[40px] bg-green-500 rounded-md text-white flex justify-center items-center cusror-pointer hover:bg-green-600"
+                >
                   Proceed to checkout
                 </button>
               </div>
