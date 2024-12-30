@@ -1,6 +1,7 @@
 "use client";
 
-import { Mail, ChevronDown, User, Heart, ShoppingCart } from "lucide-react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Mail, ChevronDown, Heart, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { FiPhoneCall } from "react-icons/fi";
 import { useShoppingCart } from "use-shopping-cart";
@@ -13,10 +14,6 @@ const nav = [
   {
     name: "USD",
     icon: <ChevronDown size={16} />,
-  },
-  {
-    name: "Login",
-    icon: <User size={16} />,
   },
   {
     name: "WhiteList",
@@ -51,6 +48,12 @@ const TopBar = () => {
               {item.icon}
             </p>
           ))}
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           <Link className="relative" href={"/shoppingCart"}>
             <ShoppingCart size={20} className="ml-5" />
             <div className="w-4 h-4 bg-black rounded-full absolute top-3 -right-2 text-[10px] flex justify-center items-center text-center">
