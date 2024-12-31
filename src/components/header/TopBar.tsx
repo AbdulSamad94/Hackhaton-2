@@ -1,7 +1,7 @@
 "use client";
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Mail, ChevronDown, Heart, ShoppingCart } from "lucide-react";
+import { Mail, ChevronDown, User2, Heart, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { FiPhoneCall } from "react-icons/fi";
 import { useShoppingCart } from "use-shopping-cart";
@@ -9,15 +9,15 @@ import { useShoppingCart } from "use-shopping-cart";
 const nav = [
   {
     name: "English",
-    icon: <ChevronDown size={16} />,
+    icon: <ChevronDown className="cursor-pointer" size={16} />,
   },
   {
     name: "USD",
-    icon: <ChevronDown size={16} />,
+    icon: <ChevronDown className="cursor-pointer" size={16} />,
   },
   {
     name: "WhiteList",
-    icon: <Heart size={16} />,
+    icon: <Heart className="cursor-pointer" size={16} />,
   },
 ];
 
@@ -40,16 +40,16 @@ const TopBar = () => {
         </div>
         <div className="flex justify-center items-center lg:gap-x-4 gap-x-1 flex-wrap gap-y-2">
           {nav.map((item, index) => (
-            <p
-              className="flex items-center gap-x-1 font-semibold text-center"
-              key={index}
-            >
-              {item.name}
+            <div className="flex items-center gap-x-1" key={index}>
+              <p className="font-semibold text-center cursor-pointer">
+                {item.name}
+              </p>
               {item.icon}
-            </p>
+            </div>
           ))}
           <SignedOut>
             <SignInButton />
+            <User2 className="cursor-pointer" size={16} />
           </SignedOut>
           <SignedIn>
             <UserButton />
